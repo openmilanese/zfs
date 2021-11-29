@@ -1,0 +1,44 @@
+# zfs
+Opennebula Integration for zfs driver
+
+
+
+
+###FRONTEND
+/etc/sudoers.d/opennebula
+Cmnd_Alias ONE_ZFS = /bin/dd, /sbin/zfs
+
+/etc/sudoers.d/opennebula-node-kvm
+oneadmin ALL=(ALL:ALL) NOPASSWD: ONE_CEPH, ONE_NET, ONE_OVS, ONE_LVM, ONE_MEM, ONE_ZFS
+
+/etc/sudoers.d/opennebula-server
+oneadmin ALL=(ALL) NOPASSWD: ONE_CEPH, ONE_HA, ONE_MARKET, ONE_ZFS
+
+/etc/one/vmm_exec/vmm_execrc
+LIVE_DISK_SNAPSHOTS="kvm-qcow2 kvm-ceph kvm-zfs"
+
+/etc/one/oned.conf
+TM_MAD = [
+    EXECUTABLE = "one_tm",
+    ARGUMENTS = "-t 15 -d dummy,lvm,shared,fs_lvm,qcow2,ssh,ceph,dev,vcenter,iscsi_libvirt,zfs"
+]
+
+DATASTORE_MAD = [
+    EXECUTABLE = "one_datastore",
+    ARGUMENTS  = "-t 15 -d dummy,fs,lvm,ceph,dev,iscsi_libvirt,vcenter,zfs -s shared,ssh,ceph,fs_lvm,qcow2,vcenter,zfs"
+]
+
+TM_MAD_CONF = [
+    NAME = "zfs", LN_TARGET = "NONE", CLONE_TARGET = "SELF", SHARED = "YES",
+    DS_MIGRATE = "NO", DRIVER = "raw", ALLOW_ORPHANS="mixed",
+    TM_MAD_SYSTEM = "ssh,shared", LN_TARGET_SSH = "SYSTEM", CLONE_TARGET_SSH = "SYSTEM",
+    DISK_TYPE_SSH = "FILE", TM_MAD_SYSTEM = "shared", LN_TARGET_SHARED = "NONE",
+    CLONE_TARGET_SHARED = "SELF", DISK_TYPE_SHARED = "BLOCK"
+]
+
+DS_MAD_CONF = [
+    NAME = "zfs",
+    REQUIRED_ATTRS = "DISK_TYPE,BRIDGE_LIST",
+    PERSISTENT_ONLY = "NO",
+    MARKETPLACE_ACTIONS = "export"
+]
