@@ -17,6 +17,19 @@ oneadmin ALL=(ALL) NOPASSWD: ONE_CEPH, ONE_HA, ONE_MARKET, ONE_ZFS
 /etc/one/vmm_exec/vmm_execrc
 LIVE_DISK_SNAPSHOTS="kvm-qcow2 kvm-ceph kvm-zfs"
 
+/etc/one/vmm_exec/vmm_exec_kvm.conf
+DISK = [
+    DRIVER  = "raw",
+    CACHE   = "none",
+    DISCARD = "unmap",
+    IO      = "native"
+]
+......
+SPICE_OPTIONS = "
+    <video>
+        <model type='qxl' heads='1'/>
+    </video>
+
 /etc/one/oned.conf
 TM_MAD = [
     EXECUTABLE = "one_tm",
