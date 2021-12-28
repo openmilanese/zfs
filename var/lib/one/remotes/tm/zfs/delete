@@ -158,6 +158,8 @@ DELETE_CMD=$(cat <<EOF
     if [ -n "$ZVOL_SNAP" ]; then
         zvol_rm_snap $ZVOL_SRC $ZVOL_SNAP
     fi
+    
+    rm $DST_PAT
 EOF
 )
 
