@@ -93,6 +93,7 @@ LN_CMD=$(cat <<EOF
     zvol_rm_snap $ZVOL_SRC
 
     mkdir -p $DST_DIR
+    rm -f $DST_PATH
     ln -s $ZVOL_DEV $DST_PATH
 EOF
 )
