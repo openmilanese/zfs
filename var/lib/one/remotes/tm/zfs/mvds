@@ -24,41 +24,4 @@
 #   - vmid is the id of the VM
 #   - dsid is the target datastore (0 is the system datastore)
 # Nothing to do
-
-if [ -z "${ONE_LOCATION}" ]; then
-    TMCOMMON=/var/lib/one/remotes/tm/tm_common.sh
-    LIB_LOCATION=/usr/lib/one
-else
-    TMCOMMON=$ONE_LOCATION/var/remotes/tm/tm_common.sh
-    LIB_LOCATION=$ONE_LOCATION/lib
-fi
-
-DRIVER_PATH=$(dirname $0)
-
-source $TMCOMMON
-source ${DRIVER_PATH}/../../etc/datastore/zfs/zfs.conf
-source ${DRIVER_PATH}/../../datastore/libfs.sh
-
-ZFS_UTILS=${DRIVER_PATH}/../../datastore/zfs/zfs_utils.sh
-
-#-------------------------------------------------------------------------------
-# Process destination
-#-------------------------------------------------------------------------------
-
-SRC=$1
-SRC_PATH="$(arg_path $SRC)"
-SRC_HOST="$(arg_host $SRC)"
-
-XPATH="${DRIVER_PATH}/../../datastore/xpath.rb --stdin"
-
-log "Deleting symbolic link $SRC_PATH"
-
-MVDS_CMD=$(cat <<EOF
-    SUDO="${SUDO}"
-
-    rm $SRC_PATH
-EOF
-)
-
-ssh_exec_and_log_stdin "$SRC_HOST" "$MVDS_CMD" "$ZFS_UTILS" \
-                 "Error deleting $SRC_PATH in $SRC_HOST"
+exit 0
